@@ -4,7 +4,6 @@
   const THEME_KEY = "tortodom-theme";
 
   document.getElementById("brandName").textContent = config.brand;
-  document.getElementById("heroBrand").textContent = config.brand;
   document.getElementById("footerBrand").textContent = config.brand;
   document.getElementById("heroTagline").textContent = config.tagline;
   document.getElementById("footerCity").textContent = config.city;
@@ -70,3 +69,4 @@
   toggleHeader();
   window.addEventListener("scroll", toggleHeader, { passive: true });
 })();
+
