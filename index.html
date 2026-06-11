@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Подберите идеальную начинку для торта за 4 вопроса. Интерактивный помощник кондитерской Тортодом." />
+  <meta name="color-scheme" content="light dark" />
+  <title>Выбор начинки — Тортодом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap&subset=cyrillic,cyrillic-ext,latin" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    (function () {
+      var saved = localStorage.getItem("tortodom-theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="#top">
+        <span class="logo__mark">🍰</span>
+        <span id="brandName">Тортодом</span>
+      </a>
+      <nav class="site-nav" aria-label="Навигация">
+        <a href="#quiz">Подбор</a>
+        <a href="#how">Как это работает</a>
+        <a href="#popular">Популярное</a>
+        <a id="headerTelegram" href="#" target="_blank" rel="noopener">Telegram</a>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <p class="eyebrow" id="heroTagline">Авторские торты на заказ</p>
+          <h1>Не знаете, какую начинку выбрать? Мы поможем за минуту</h1>
+          <p class="hero__text">
+            Ответьте на 4 коротких вопроса — и получите 3 варианта начинки с процентом совпадения
+            и понятным объяснением, почему они вам подходят.
+          </p>
+          <div class="hero__actions">
+            <button type="button" class="main-btn" data-scroll="quiz" data-start-quiz="true">
+              Подобрать начинку
+            </button>
+            <a class="secondary-btn" id="heroTelegram" href="#" target="_blank" rel="noopener">
+              Написать кондитеру
+            </a>
+          </div>
+          <div class="hero__stats">
+            <span class="stat-pill"><span id="fillingsCount">19</span> начинок в базе</span>
+            <span class="stat-pill"><span id="questionsCount">4</span> вопроса</span>
+            <span class="stat-pill">≈ 1 минута</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Что вы получите">
+          <div class="hero-card__emoji">✨</div>
+          <h2>Что будет в результате</h2>
+          <p>Не просто список — персональная подборка с характером:</p>
+          <ul>
+            <li>🥇 главный вариант с процентом совпадения</li>
+            <li>смешное и ёмкое объяснение «почему это вы»</li>
+            <li>2 запасных варианта на случай сомнений</li>
+            <li>кнопка для быстрого заказа в Telegram</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+      <div class="container">
+        <div class="cake-picker">
+          <h2>Подбор начинки</h2>
+          <p>Ответьте честно — так результат будет точнее и смешнее.</p>
+
+          <div class="quiz-intro" id="quizIntro">
+            <div class="quiz-intro__emoji">🎂</div>
+            <h3>Готовы узнать свой торт?</h3>
+            <p>4 вопроса, 3 результата, 0 сожалений о выборе начинки.</p>
+            <div class="hero__actions quiz-intro__actions">
+              <button type="button" class="main-btn" id="quizStartBtn">Начать подбор</button>
+            </div>
+          </div>
+
+          <div id="quizActive" hidden>
+            <div class="progress-wrap">
+              <p class="progress-label" id="progressLabel">Вопрос 1 из 4</p>
+              <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+              </div>
+            </div>
+
+            <div id="questions"></div>
+
+            <div class="result" id="result">
+              <div class="result-hero">
+                <div class="emoji">🍰</div>
+                <h3>Ваш идеальный торт найден!</h3>
+                <p>Мы проанализировали ваши ответы. Вот вердикт алгоритма — без сахарной пудры на глаза.</p>
+              </div>
+
+              <p class="result-subtitle">Ещё два запасных варианта — на случай, если перед праздником передумаете</p>
+
+              <div id="resultList"></div>
+
+              <div class="buttons">
+                <a class="main-btn" id="telegramBtn" target="_blank" rel="noopener">
+                  Написать в Telegram
+                </a>
+                <button type="button" class="secondary-btn" id="restartBtn">
+                  Пройти заново
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps" id="how">
+      <div class="container">
+        <p class="eyebrow">Как это работает</p>
+        <h2 class="section-title">Три шага до идеального торта</h2>
+        <p class="section-lead">Без регистрации, без длинных форм — только вкусовые предпочтения.</p>
+
+        <div class="steps__grid">
+          <article class="step-card">
+            <span class="step-card__num">1</span>
+            <h3>Ответьте на вопросы</h3>
+            <p>Расскажите про настроение праздника, гостей и то, чего точно не хочется.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-card__num">2</span>
+            <h3>Получите топ-3</h3>
+            <p>Алгоритм сравнит ваши ответы с 19 начинками и покажет лучшие совпадения.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-card__num">3</span>
+            <h3>Обсудите заказ</h3>
+            <p>Нажмите «Написать в Telegram» — сообщение уже будет с вашими вариантами.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="highlights" id="popular">
+      <div class="container">
+        <p class="eyebrow">Популярное</p>
+        <h2 class="section-title">Начинки, которые часто выбирают</h2>
+        <p class="section-lead">А подбор поможет найти именно ваш вариант среди всей коллекции <span id="heroBrand">Тортодом</span>.</p>
+        <div class="highlights__grid" id="highlightsGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>© <span id="footerBrand">Тортодом</span>, <span id="footerCity">Москва</span> — подбор начинки на сайте</p>
+      <div class="site-footer__actions">
+        <button type="button" class="theme-toggle theme-toggle--footer" id="themeToggleFooter" aria-label="Переключить тему">
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">🌙</span>
+        </button>
+        <a id="footerTelegram" href="#" target="_blank" rel="noopener">@tortodom_moscow</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

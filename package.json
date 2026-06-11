@@ -1,0 +1,17 @@
+{
+  "name": "tortodom-filling-picker",
+  "version": "1.0.0",
+  "description": "Лендинг и квиз подбора начинки для торта — Тортодом",
+  "private": true,
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "preview": "npx serve . -l 3000"
+  },
+  "keywords": [
+    "cake",
+    "quiz",
+    "landing",
+    "tortodom"
+  ],
+  "license": "MIT"
+}
